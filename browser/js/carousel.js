@@ -1,22 +1,30 @@
-window.carouselInit = (element, images) => {
+
+window.carouselInit = (element, mediaArray) => {
   const carousel = dom('<div class="carousel"></div>');
-  let activeImage = 0;
+  let activeMedia = 0;
   const leftButton = dom('<button class="carousel-left"></button>');
   const rightButton = dom('<button class="carousel-right"></button>');
   element.appendChild(carousel);
   element.appendChild(leftButton);
   element.appendChild(rightButton);
 
+  var currentChild = getMediaInDOM(mediaArray[activeMedia]);
+
   leftButton.onclick = () => {
-    activeImage--;
-    activeImage = activeImage < 0 ? images.length - 1 : activeImage;
-    carousel.innerHTML = `<img src="${images[activeImage]}">`;
+    activeMedia--;
+    activeMedia = activeMedia < 0 ? mediaArray.length - 1 : activeMedia;
+    carousel.removeChild(currentChild);
+    currentChild = getMediaInDOM(mediaArray[activeMedia]);
+    carousel.appendChild(currentChild);
   }
 
   rightButton.onclick = () => {
-    activeImage++;
-    activeImage = activeImage > images.length - 1 ? 0 : activeImage;
-    carousel.innerHTML = `<img src="${images[activeImage]}">`;
+    activeMedia++;
+    activeMedia = activeMedia > mediaArray.length - 1 ? 0 : activeMedia;
+    carousel.removeChild(currentChild);
+    currentChild = getMediaInDOM(mediaArray[activeMedia]);
+    carousel.appendChild(currentChild);
   }
-  carousel.innerHTML = `<img src="${images[activeImage]}">`;
+
+  carousel.appendChild(currentChild);
 }

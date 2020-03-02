@@ -78,14 +78,10 @@ function renderMessageAsPost (container, message) {
 
 function renderPost (post) {
   const postDom = dom('<div class="center"></div>');
-  if (post.videos) {
-    postDom.appendChild(dom(`<video width="${post.videos[0].width}" controls>
-                                <source src="${post.videos[0].url}" type="video/mp4">
-                              </video>`));
-  } else if (post.carouselMedia && post.carouselMedia.length) {
-    window.carouselInit(postDom, post.images.map((el) => el[0].url))
-  } else {
-    postDom.appendChild(dom(`<img src="${post.images[0].url}"/>`));
+  if(post.carouselMedia && post.carouselMedia.length){
+    window.carouselInit(postDom, post.carouselMedia.map((el) => el._params))
+  }else{
+    postDom.appendChild(getMediaInDOM(post));
   }
   if (post.caption) {
     postDom.appendChild(dom(`<p class="post-caption">${post.caption}</p>`));
